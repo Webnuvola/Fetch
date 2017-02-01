@@ -177,6 +177,13 @@ class Message
     protected $mailbox;
 
     /**
+     * Contains the raw message body.
+     *
+     * @var string
+     */
+    protected $messageBody;
+
+    /**
      * This value defines the encoding we want the email message to use.
      *
      * @var string
@@ -314,6 +321,20 @@ class Message
         }
 
         return $this->rawHeaders;
+    }
+
+    /**
+     * This function returns the raw body of the message.
+     *
+     * @return string
+     */
+    public function getRawBody()
+    {
+        if (!isset($this->messageBody)) {
+            $this->messageBody = imap_fetchbody($this->imapStream, $this->uid, '', FT_UID | FT_PEEK);
+        }
+
+        return $this->messageBody;
     }
 
     /**
